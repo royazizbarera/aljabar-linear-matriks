@@ -8,6 +8,8 @@ import MatrixOperationsLibrary as mol
 # ======================================================================================================================================================================
 # GUI Layout
 
+
+# ======================================================================================================================================================================
 # Mengisi variabel root dengan TK() dari tkinter
 root = Tk()
 # Mengatur ukuran window GUI sebesar 500x500
@@ -17,6 +19,8 @@ root.title("Kelompok 2")
 # Memberi warna background GUIa
 root.configure(bg="#474E64")
 
+# ======================================================================================================================================================================
+# FRAME
 tops = Frame(root, width=500, height=50, bg="#474E64")    # tops layout
 # Mengatur posisi tops layout
 tops.pack(side=TOP)
@@ -36,19 +40,20 @@ f3.pack(side=TOP, pady=(32, 0))
 f4 = Frame(root, width=500, height=100, bg="#474E64")     # f4 layout
 # Mengatur posisi tops layout
 f4.pack(side=TOP, pady=(32, 0))
+
+
 # ======================================================================================================================================================================
 # Function
-
-
 def Generate():
     # Handling Exceptions
     try:
-
-        # Mengubah nilai state button
+    # ======================================================================================================================================================================
+    # Mengubah nilai state button
         generate["state"] = DISABLED
         save["state"] = NORMAL
         destroy["state"] = NORMAL
 
+    # ======================================================================================================================================================================
         # Mendeklarasikan variabel global dan mengambil nilai M dan N
         global M
         global N
@@ -71,6 +76,7 @@ def Generate():
                 cols1.append(entry)
             rows1.append(cols1)
 
+    # ======================================================================================================================================================================
         # Mendeklarasikan variabel global dan mengambil nilai P dan Q
         global P
         global Q
@@ -250,7 +256,7 @@ def Add():
     # Handling Exceptions
     try:
         # Penjumlahan matriks A dan matriks B --> Matriks C
-        C = mol.add(A,B)
+        C = mol.add(A, B)
         # C = A + B   # Penjumlahan numpy array (Elementwise Operation)
     except:
         # Menampilkan messagebox bila error(tidak dapat dijumlahkan)
@@ -279,7 +285,7 @@ def Subtract():
     # Handling Exceptions
     try:
         # Pengurangan matriks A dan matriks B --> Matriks C
-        C = A - B   # Pengurangan numpy array (Elementwise Operation)
+        C = mol.subtract(A,B)   # Pengurangan numpy array (Elementwise Operation)
     except:
         # Menampilkan messagebox bila error(tidak dapat dikurangi)
         messagebox.showinfo(
@@ -337,13 +343,15 @@ def Determinant():
         # Determinan matriks A
         # Determinant matriks menggunakan fungsi dari numpy dan dibulatkan nilai nya dengan fungsi round()
         D = round(np.linalg.det(A))
-        # Determinan matriks A
+
+        # Determinan matriks B
         # Determinant matriks menggunakan fungsi dari numpy dan dibulatkan nilai nya dengan fungsi round()
         E = round(np.linalg.det(B))
 
         # Menghapus semua widget yang ada pada f4
         for entry in f4.winfo_children():
             entry.destroy()
+
 
         # Membuat widget label( det(A) ) pada f4, dan mengatur posisinya
         titleD = Label(f4, font=("arial", "9", "bold"),
@@ -470,7 +478,6 @@ def Transpose():
 
 # ======================================================================================================================================================================
 
-
         # GUI Layout (Tops)
 # Fungsi mengambil waktu lokal
 localtime = time.asctime(time.localtime(time.time()))
@@ -593,17 +600,17 @@ invers.grid(row=1, column=3, padx=(10, 0), pady=(4, 0))
 
 # Button Transpose --> Menghitung Tramspose
 transpose = Button(f2, text="Transpose", width=12, command=Transpose,
-                relief=GROOVE, bg="#3C4559", fg="#FFFFFF", state=DISABLED)
+                   relief=GROOVE, bg="#3C4559", fg="#FFFFFF", state=DISABLED)
 transpose.grid(row=2, column=3, padx=(10, 0), pady=(4, 0))
 
 # Button Transpose --> Menghitung Tramspose
 echelon = Button(f2, text="Echelon", width=12, command=Transpose,
-                relief=GROOVE, bg="#3C4559", fg="#FFFFFF", state=DISABLED)
+                 relief=GROOVE, bg="#3C4559", fg="#FFFFFF", state=DISABLED)
 echelon.grid(row=2, column=2, padx=(10, 0), pady=(4, 0))
 
 # Button Transpose --> Menghitung Tramspose
 reducedEchelon = Button(f2, text="Reduced Echelon", width=12, command=Transpose,
-                relief=GROOVE, bg="#3C4559", fg="#FFFFFF", state=DISABLED)
+                        relief=GROOVE, bg="#3C4559", fg="#FFFFFF", state=DISABLED)
 reducedEchelon.grid(row=2, column=1, padx=(10, 0), pady=(4, 0))
 
 # ======================================================================================================================================================================
