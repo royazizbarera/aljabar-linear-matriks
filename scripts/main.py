@@ -19,25 +19,47 @@ root.title("Kelompok 2")
 # Memberi warna background GUIa
 root.configure(bg="#474E64")
 
+# main
+main_frame = Frame(root)
+main_frame.configure(bg="#474E64")
+main_frame.pack(fill=BOTH, expand=1)
+
+# canvas
+my_canvas = Canvas(main_frame, bg="#474E64")
+my_canvas.pack(side=LEFT, fill=BOTH, expand=1)
+
+# scrollbar
+my_scrollbar = Scrollbar(main_frame, orient=VERTICAL, command=my_canvas.yview)
+my_scrollbar.pack(side=RIGHT, fill=Y)
+
+# configure the canvas
+my_canvas.configure(yscrollcommand=my_scrollbar.set)
+# my_canvas.pack(side=TOP, fill=X)
+my_canvas.bind('<Configure>', lambda e: my_canvas.configure(scrollregion = my_canvas.bbox("all")))
+
+second_frame = Frame(my_canvas, bg="#474E64", padx=(10), pady=(10))
+second_frame.pack(fill=BOTH, expand=1)
+my_canvas.create_window((0,0), window=second_frame, anchor="nw")
+
 # ======================================================================================================================================================================
 # FRAME
-tops = Frame(root, width=500, height=50, bg="#474E64")    # tops layout
+tops = Frame(second_frame, width=500, height=50, bg="#474E64")    # tops layout
 # Mengatur posisi tops layout
 tops.pack(side=TOP)
 
-f1 = Frame(root, width=500, height=100, bg="#474E64")     # f1 layout
+f1 = Frame(second_frame, width=500, height=100, bg="#474E64")     # f1 layout
 # Mengatur posisi tops layout
 f1.pack(side=TOP, pady=(16, 0))
 
-f2 = Frame(root, width=500, height=100, bg="#474E64")     # f2 layout
+f2 = Frame(second_frame, width=500, height=100, bg="#474E64")     # f2 layout
 # Mengatur posisi tops layout
 f2.pack(side=TOP, pady=(32, 0))
 
-f3 = Frame(root, width=500, height=100, bg="#474E64")     # f3 layout
+f3 = Frame(second_frame, width=500, height=100, bg="#474E64")     # f3 layout
 # Mengatur posisi tops layout
 f3.pack(side=TOP, pady=(32, 0))
 
-f4 = Frame(root, width=500, height=100, bg="#474E64")     # f4 layout
+f4 = Frame(second_frame, width=500, height=100, bg="#474E64")     # f4 layout
 # Mengatur posisi tops layout
 f4.pack(side=TOP, pady=(32, 0))
 
@@ -47,8 +69,8 @@ f4.pack(side=TOP, pady=(32, 0))
 def Generate():
     # Handling Exceptions
     try:
-    # ======================================================================================================================================================================
-    # Mengubah nilai state button
+        # ======================================================================================================================================================================
+        # Mengubah nilai state button
         generate["state"] = DISABLED
         save["state"] = NORMAL
         destroy["state"] = NORMAL
@@ -123,16 +145,21 @@ def Generate():
 
 
 def Destroy():
+
     # Mengubah nilai state button
+    destroy["state"] = DISABLED
+    generate["state"] = NORMAL
+    save["state"] = DISABLED
     delete["state"] = DISABLED
     add["state"] = DISABLED
     subtract["state"] = DISABLED
     multiply["state"] = DISABLED
     determinant["state"] = DISABLED
-    save["state"] = DISABLED
-    destroy["state"] = DISABLED
     scalar["state"] = DISABLED
-    generate["state"] = NORMAL
+    invers["state"] = DISABLED
+    transpose["state"] = DISABLED
+    echelon["state"] = DISABLED
+    reducedEchelon["state"] = DISABLED
 
     # Menghapus value dari widget entry(baris dan kolom) pada f1
     for widget in f1.winfo_children():
@@ -227,6 +254,10 @@ def Save():
         multiply["state"] = DISABLED
         determinant["state"] = DISABLED
         scalar["state"] = DISABLED
+        invers["state"] = DISABLED
+        transpose["state"] = DISABLED
+        echelon["state"] = DISABLED
+        reducedEchelon["state"] = DISABLED
 
         # Menampilkan messagebox bila error
         messagebox.showinfo(title="informasi",
@@ -287,7 +318,8 @@ def Subtract():
     # Handling Exceptions
     try:
         # Pengurangan matriks A dan matriks B --> Matriks C
-        C = mol.subtract(A,B)   # Pengurangan numpy array (Elementwise Operation)
+        # Pengurangan numpy array (Elementwise Operation)
+        C = mol.subtract(A, B)
     except:
         # Menampilkan messagebox bila error(tidak dapat dikurangi)
         messagebox.showinfo(
@@ -353,7 +385,6 @@ def Determinant():
         # Menghapus semua widget yang ada pada f4
         for entry in f4.winfo_children():
             entry.destroy()
-
 
         # Membuat widget label( det(A) ) pada f4, dan mengatur posisinya
         titleD = Label(f4, font=("arial", "9", "bold"),
@@ -477,6 +508,7 @@ def Transpose():
         messagebox.showinfo(title="informasi",
                             message="Matriks tidak memiliki invers")
 
+
 def Echelon():
     # Handling Exceptions
     try:
@@ -492,7 +524,7 @@ def Echelon():
                        text="Echelon(A)", bg="#474E64", fg="#FFFFFF")
         titleC.grid(row=0, column=0, columnspan=len(A_echelon[0]))
 
-        # Membuat, mengatur posisi, dan mengisi widget 
+        # Membuat, mengatur posisi, dan mengisi widget
         for i in range(len(A_echelon)):
             for j in range(len(A_echelon[0])):
                 entry = Entry(f4, width=5, justify="center")
@@ -502,7 +534,7 @@ def Echelon():
     except:
         messagebox.showinfo(title="informasi",
                             message="Matriks tidak memiliki eselon baris")
-        
+
 
 def ReducedEchelon():
     # Handling Exceptions
@@ -519,7 +551,7 @@ def ReducedEchelon():
                        text="Reduced(A)", bg="#474E64", fg="#FFFFFF")
         titleC.grid(row=0, column=0, columnspan=len(A_Rechelon[0]))
 
-        # Membuat, mengatur posisi, dan mengisi widget 
+        # Membuat, mengatur posisi, dan mengisi widget
         for i in range(len(A_Rechelon)):
             for j in range(len(A_Rechelon[0])):
                 entry = Entry(f4, width=5, justify="center")
@@ -658,14 +690,15 @@ transpose.grid(row=2, column=3, padx=(10, 0), pady=(4, 0))
 
 # Button Transpose --> Mengubah matriks menjadi bentuk eselon baris
 echelon = Button(f2, text="Echelon", width=12, command=Echelon,
-                relief=GROOVE, bg="#3C4559", fg="#FFFFFF", state=DISABLED)
+                 relief=GROOVE, bg="#3C4559", fg="#FFFFFF", state=DISABLED)
 echelon.grid(row=2, column=2, padx=(10, 0), pady=(4, 0))
 
 # Button Transpose --> Mengubah matriks menjadi bentuk eselon baris tereduksi
 reducedEchelon = Button(f2, text="Reduced Echelon", width=12, command=ReducedEchelon,
-                relief=GROOVE, bg="#3C4559", fg="#FFFFFF", state=DISABLED)
+                        relief=GROOVE, bg="#3C4559", fg="#FFFFFF", state=DISABLED)
 reducedEchelon.grid(row=2, column=1, padx=(10, 0), pady=(4, 0))
 
 # ======================================================================================================================================================================
 # Mainloop Window Tkinter
+
 root.mainloop()
