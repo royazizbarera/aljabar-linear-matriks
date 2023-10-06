@@ -377,8 +377,8 @@ def Determinant():
 
 def Scalar():
     # Perkalian matriks A dan skalar K --> Matriks C
-    C = A * K
-    D = B * K
+    C = mol.scale(A,K)
+    D = mol.scale(B,K)
 
     # Menghapus semua widget yang ada pada f4
     for widget in f4.winfo_children():
@@ -401,7 +401,7 @@ def Scalar():
                    text="B x K", bg="#474E64", fg="#FFFFFF")
     titleD.grid(row=5, column=0, columnspan=len(D[0]))
 
-    # Membuat, mengatur posisi, dan mengisi widget entry(Matriks C)
+    # Membuat, mengatur posisi, dan mengisi widget entry(Matriks D)
     for i in range(len(D)):
         for j in range(len(D[0])):
             entry = Entry(f4, width=5, justify="center")
@@ -447,6 +447,7 @@ def Transpose():
     try:
         # global A  # Gunakan matriks A yang sudah diambil dari GUI
         A_transpose = mol.transpose(A)
+        B_transpose = mol.transpose(B)
 
         # Menghapus semua widget yang ada pada f4
         for widget in f4.winfo_children():
@@ -457,17 +458,27 @@ def Transpose():
                        text="Transpose(A)", bg="#474E64", fg="#FFFFFF")
         titleC.grid(row=0, column=0, columnspan=len(A_transpose[0]))
 
-        # Membuat, mengatur posisi, dan mengisi widget entry(Invers Matriks A)
         for i in range(len(A_transpose)):
             for j in range(len(A_transpose[0])):
                 entry = Entry(f4, width=5, justify="center")
-                entry.grid(row=i + 1, column=j)
-                # Bulatkan ke dua desimal
-                entry.insert(0, round(A_transpose[i, j], 2))
+                entry.grid(row=i+1, column=j)
+                entry.insert(0, A_transpose[i, j])
+
+        # Membuat widget label(B x K) pada f4 dan mengatur posisinya
+        titleD = Label(f4, font=("arial", "9", "bold"),
+                   text="Transpose(B)", bg="#474E64", fg="#FFFFFF")
+        titleD.grid(row=5, column=0, columnspan=len(B_transpose[0]))
+
+    # Membuat, mengatur posisi, dan mengisi widget entry(Matriks D)
+        for i in range(len(B_transpose)):
+            for j in range(len(B_transpose[0])):
+                entry = Entry(f4, width=5, justify="center")
+                entry.grid(row=i+1+5, column=j)
+                entry.insert(0, B_transpose[i, j])
     except:
-        # Menampilkan messagebox bila error (matriks tidak memiliki invers)
-        messagebox.showinfo(title="informasi",
-                            message="Matriks tidak memiliki invers")
+        # Menampilkan messagebox bila error (matriks tidak dapat ditranspose)
+            messagebox.showinfo(title="informasi",
+                            message="Matriks tidak dapat ditranspose")
 
 def Echelon():
     # Handling Exceptions
