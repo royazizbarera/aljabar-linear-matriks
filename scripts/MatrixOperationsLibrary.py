@@ -298,6 +298,7 @@ def linearDependence(matrix):
         return True
     
 
+# error
 def determinant(matrix):
     rows = numRows(matrix)
     cols = numCols(matrix)

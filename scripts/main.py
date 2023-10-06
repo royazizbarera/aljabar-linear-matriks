@@ -12,10 +12,9 @@ import MatrixOperationsLibrary as mol
 root = Tk()
 # Mengatur ukuran window GUI sebesar 500x500
 root.geometry("500x500")
-# root.iconbitmap("C:/Users/hp/Desktop/Aljabar Linear/aplikasi/Matrix-Calculator-GUI/matrix.ico")   # Memberi icon pada GUI yang diambil dari folder
 # Mengatur title GUI yang terletak dikanan icon
-root.title("Kelompok kita")
-# Memberi warna background GUI
+root.title("Kelompok 2")
+# Memberi warna background GUIa
 root.configure(bg="#474E64")
 
 tops = Frame(root, width=500, height=50, bg="#474E64")    # tops layout
@@ -251,7 +250,8 @@ def Add():
     # Handling Exceptions
     try:
         # Penjumlahan matriks A dan matriks B --> Matriks C
-        C = A + B   # Penjumlahan numpy array (Elementwise Operation)
+        C = mol.add(A,B)
+        # C = A + B   # Penjumlahan numpy array (Elementwise Operation)
     except:
         # Menampilkan messagebox bila error(tidak dapat dijumlahkan)
         messagebox.showinfo(
