@@ -6,8 +6,8 @@ import numpy as np                  # Mengimport numpy dengan nama alias np
 import time                         # Mengimport time
 import MatrixOperationsLibrary as mol
 # ======================================================================================================================================================================
-# GUI Layout
 
+# GUI Layout Reference : github.com/arryaaas
 
 # ======================================================================================================================================================================
 # Mengisi variabel root dengan TK() dari tkinter
@@ -417,34 +417,34 @@ def Determinant():
 def Scalar():
     # Perkalian matriks A dan skalar K --> Matriks C
     C = mol.scale(A,K)
+    # Perkalian matriks B dan skalar K --> Matriks D
     D = mol.scale(B,K)
-
-    # Menghapus semua widget yang ada pada f4
-    for widget in f4.winfo_children():
-        widget.destroy()
 
     # Membuat widget label(A x K) pada f4 dan mengatur posisinya
     titleC = Label(f4, font=("arial", "9", "bold"),
-                   text="A x K", bg="#474E64", fg="#FFFFFF")
+               text="A x K", bg="#474E64", fg="#FFFFFF")
     titleC.grid(row=0, column=0, columnspan=len(C[0]))
 
     # Membuat, mengatur posisi, dan mengisi widget entry(Matriks C)
     for i in range(len(C)):
         for j in range(len(C[0])):
             entry = Entry(f4, width=5, justify="center")
-            entry.grid(row=i+1, column=j)
+            entry.grid(row=i + 1, column=j)  # Matriks A di baris 1 ke atas
             entry.insert(0, C[i, j])
+
+        # Mengatur posisi antara label Matriks A x K dan label Matriks B x K
+    row_offset = len(C) + 2
 
     # Membuat widget label(B x K) pada f4 dan mengatur posisinya
     titleD = Label(f4, font=("arial", "9", "bold"),
-                   text="B x K", bg="#474E64", fg="#FFFFFF")
-    titleD.grid(row=5, column=0, columnspan=len(D[0]))
+               text="B x K", bg="#474E64", fg="#FFFFFF")
+    titleD.grid(row=row_offset, column=0, columnspan=len(D[0]))
 
-    # Membuat, mengatur posisi, dan mengisi widget entry(Matriks D)
+# Membuat, mengatur posisi, dan mengisi widget entry(Matriks D)
     for i in range(len(D)):
         for j in range(len(D[0])):
             entry = Entry(f4, width=5, justify="center")
-            entry.grid(row=i+1+5, column=j)
+            entry.grid(row=i + 1 + row_offset, column=j)  # Matriks B di baris setelah Matriks A
             entry.insert(0, D[i, j])
 # ======================================================================================================================================================================
 
@@ -486,36 +486,46 @@ def Transpose():
     try:
         # global A  # Gunakan matriks A yang sudah diambil dari GUI
         A_transpose = mol.transpose(A)
+        # global B  # Gunakan matriks B yang sudah diambil dari GUI
         B_transpose = mol.transpose(B)
 
         # Menghapus semua widget yang ada pada f4
         for widget in f4.winfo_children():
             widget.destroy()
 
-        # Membuat widget label(Invers(A)) pada f4 dan mengatur posisinya
+        # Membuat widget label(Transpose(A)) pada f4 dan mengatur posisinya
         titleC = Label(f4, font=("arial", "9", "bold"),
                        text="Transpose(A)", bg="#474E64", fg="#FFFFFF")
         titleC.grid(row=0, column=0, columnspan=len(A_transpose[0]))
 
+        # Membuat widget label(Transpose(A)) pada f4 dan mengatur posisinya
+        titleC = Label(f4, font=("arial", "9", "bold"),
+               text="Transpose(A)", bg="#474E64", fg="#FFFFFF")
+        titleC.grid(row=0, column=0, columnspan=len(A_transpose[0]))
+
+        # Membuat, mengatur posisi, dan mengisi widget entry(Matriks transpose A)
         for i in range(len(A_transpose)):
             for j in range(len(A_transpose[0])):
                 entry = Entry(f4, width=5, justify="center")
-                entry.grid(row=i+1, column=j)
+                entry.grid(row=i + 1, column=j)  # Matriks transpose A di baris 1 ke atas
                 entry.insert(0, A_transpose[i, j])
 
-        # Membuat widget label(B x K) pada f4 dan mengatur posisinya
-        titleD = Label(f4, font=("arial", "9", "bold"),
-                   text="Transpose(B)", bg="#474E64", fg="#FFFFFF")
-        titleD.grid(row=5, column=0, columnspan=len(B_transpose[0]))
+        # Mengatur posisi antara label Transpose(A) dan label Transpose(B)
+        row_offset = len(A_transpose) + 2
 
-    # Membuat, mengatur posisi, dan mengisi widget entry(Matriks D)
+        # Membuat widget label(Transpose(B)) pada f4 dan mengatur posisinya
+        titleD = Label(f4, font=("arial", "9", "bold"),
+               text="Transpose(B)", bg="#474E64", fg="#FFFFFF")
+        titleD.grid(row=row_offset, column=0, columnspan=len(B_transpose[0]))
+
+        # Membuat, mengatur posisi, dan mengisi widget entry(Matriks transpose B)
         for i in range(len(B_transpose)):
             for j in range(len(B_transpose[0])):
                 entry = Entry(f4, width=5, justify="center")
-                entry.grid(row=i+1+5, column=j)
+                entry.grid(row=i + 1 + row_offset, column=j)  # Matriks transpose B di baris setelah Matriks transpose A
                 entry.insert(0, B_transpose[i, j])
-    except:
         # Menampilkan messagebox bila error (matriks tidak dapat ditranspose)
+    except:
             messagebox.showinfo(title="informasi",
                             message="Matriks tidak dapat ditranspose")
 
@@ -581,9 +591,11 @@ localtime = time.asctime(time.localtime(time.time()))
 title = Label(tops, font=("arial", "12", "bold"),
               text="Demo Operasi Matriks", bg="#474E64", fg="#FFFFFF")
 title.grid(row=0, column=0, pady=(8, 0))  # Judul program
+title = Label(tops, font=("arial", "9", "bold"),text="Farrel Rahandika, Fahrizal, Rayhan Fanez, Roy Aziz Barera", bg="#474E64", fg="#FFFFFF")
+title.grid(row=1, column=0, pady=(8, 0))  # Judul program
 
 date = Label(tops, text=localtime, bg="#474E64", fg="#FFFFFF")
-date.grid(row=1, column=0, pady=(0, 8))  # Waktu lokal saat buka program
+date.grid(row=2, column=0, pady=(0, 8))  # Waktu lokal saat buka program
 # ======================================================================================================================================================================
 # GUI Layout (Frame 1 / f1)
 # Label matriks A
