@@ -1,6 +1,6 @@
 import numpy as np
 import MatrixOperationsLibrary as mol
-
+import sympy as sp
 
 def get_scale_from_user() -> float:
     '''
@@ -59,7 +59,7 @@ def main():
     elif choice == "5":
         result = mol.inverse(matrix)
     elif choice == "6":
-        result = mol.echelon(matrix)  
+        result = mol.echelon(matrix)
     elif choice == "7":
         result = mol.reducedEchelon(matrix)
     elif choice == "8":

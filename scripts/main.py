@@ -171,6 +171,8 @@ def Save():
             invers["state"] = NORMAL
             scalar["state"] = NORMAL
             transpose["state"] = NORMAL
+            echelon["state"] = NORMAL
+            reducedEchelon["state"] = NORMAL
         else:
             determinant["state"] = DISABLED
 
@@ -422,7 +424,7 @@ def Invers():
         # global A  # Gunakan matriks A yang sudah diambil dari GUI
 
         # Hitung invers matriks A
-        A_inverse = mol.inverse(A)
+        A_inverse = np.linalg.inv(A)
 
         # Menghapus semua widget yang ada pada f4
         for widget in f4.winfo_children():
@@ -475,7 +477,58 @@ def Transpose():
         messagebox.showinfo(title="informasi",
                             message="Matriks tidak memiliki invers")
 
+def Echelon():
+    # Handling Exceptions
+    try:
+        # global A  # Gunakan matriks A yang sudah diambil dari GUI
+        A_echelon = mol.echelon(A)
 
+        # Menghapus semua widget yang ada pada f4
+        for widget in f4.winfo_children():
+            widget.destroy()
+
+        # Membuat widget pada f4 dan mengatur posisinya
+        titleC = Label(f4, font=("arial", "9", "bold"),
+                       text="Echelon(A)", bg="#474E64", fg="#FFFFFF")
+        titleC.grid(row=0, column=0, columnspan=len(A_echelon[0]))
+
+        # Membuat, mengatur posisi, dan mengisi widget 
+        for i in range(len(A_echelon)):
+            for j in range(len(A_echelon[0])):
+                entry = Entry(f4, width=5, justify="center")
+                entry.grid(row=i + 1, column=j)
+                # Bulatkan ke dua desimal
+                entry.insert(0, round(A_echelon[i, j], 2))
+    except:
+        messagebox.showinfo(title="informasi",
+                            message="Matriks tidak memiliki eselon baris")
+        
+
+def ReducedEchelon():
+    # Handling Exceptions
+    try:
+        # global A  # Gunakan matriks A yang sudah diambil dari GUI
+        A_Rechelon = mol.reducedEchelon(A)
+
+        # Menghapus semua widget yang ada pada f4
+        for widget in f4.winfo_children():
+            widget.destroy()
+
+        # Membuat widget label pada f4 dan mengatur posisinya
+        titleC = Label(f4, font=("arial", "9", "bold"),
+                       text="Reduced(A)", bg="#474E64", fg="#FFFFFF")
+        titleC.grid(row=0, column=0, columnspan=len(A_Rechelon[0]))
+
+        # Membuat, mengatur posisi, dan mengisi widget 
+        for i in range(len(A_Rechelon)):
+            for j in range(len(A_Rechelon[0])):
+                entry = Entry(f4, width=5, justify="center")
+                entry.grid(row=i + 1, column=j)
+                # Bulatkan ke dua desimal
+                entry.insert(0, round(A_Rechelon[i, j], 2))
+    except:
+        messagebox.showinfo(title="informasi",
+                            message="Matriks tidak memiliki eselon baris")
 # ======================================================================================================================================================================
 
         # GUI Layout (Tops)
@@ -603,14 +656,14 @@ transpose = Button(f2, text="Transpose", width=12, command=Transpose,
                    relief=GROOVE, bg="#3C4559", fg="#FFFFFF", state=DISABLED)
 transpose.grid(row=2, column=3, padx=(10, 0), pady=(4, 0))
 
-# Button Transpose --> Menghitung Tramspose
-echelon = Button(f2, text="Echelon", width=12, command=Transpose,
-                 relief=GROOVE, bg="#3C4559", fg="#FFFFFF", state=DISABLED)
+# Button Transpose --> Mengubah matriks menjadi bentuk eselon baris
+echelon = Button(f2, text="Echelon", width=12, command=Echelon,
+                relief=GROOVE, bg="#3C4559", fg="#FFFFFF", state=DISABLED)
 echelon.grid(row=2, column=2, padx=(10, 0), pady=(4, 0))
 
-# Button Transpose --> Menghitung Tramspose
-reducedEchelon = Button(f2, text="Reduced Echelon", width=12, command=Transpose,
-                        relief=GROOVE, bg="#3C4559", fg="#FFFFFF", state=DISABLED)
+# Button Transpose --> Mengubah matriks menjadi bentuk eselon baris tereduksi
+reducedEchelon = Button(f2, text="Reduced Echelon", width=12, command=ReducedEchelon,
+                relief=GROOVE, bg="#3C4559", fg="#FFFFFF", state=DISABLED)
 reducedEchelon.grid(row=2, column=1, padx=(10, 0), pady=(4, 0))
 
 # ======================================================================================================================================================================
