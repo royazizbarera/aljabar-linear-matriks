@@ -6,6 +6,7 @@ import numpy as np                  # Mengimport numpy dengan nama alias np
 import time                         # Mengimport time
 # ======================================================================================================================================================================
                                                             # GUI Layout
+
 root = Tk()                                                                 # Mengisi variabel root dengan TK() dari tkinter                
 root.geometry("500x500")                                                    # Mengatur ukuran window GUI sebesar 500x500
 root.iconbitmap("C:/Users/hp/Desktop/Aljabar Linear/aplikasi/Matrix-Calculator-GUI/matrix.ico")   # Memberi icon pada GUI yang diambil dari folder
@@ -126,10 +127,13 @@ def Save():
         save["state"] = DISABLED; delete["state"] = NORMAL
 
         if (M != 1) or (N != 1):
-            add["state"] = NORMAL; subtract["state"] = NORMAL
+            add["state"] = NORMAL; 
+            subtract["state"] = NORMAL
             multiply["state"] = NORMAL; 
             determinant["state"] = NORMAL
             scalar["state"] = DISABLED
+            if (K > 0):
+                scalar["state"] = NORMAL
         else:
             determinant["state"] = DISABLED
 
@@ -277,30 +281,43 @@ def Determinant():
     try:                                
         # Determinan matriks A  
         D = round(np.linalg.det(A))     # Determinant matriks menggunakan fungsi dari numpy dan dibulatkan nilai nya dengan fungsi round()   
+        # Determinan matriks A  
+        E = round(np.linalg.det(B))     # Determinant matriks menggunakan fungsi dari numpy dan dibulatkan nilai nya dengan fungsi round()   
+
+        # Menghapus semua widget yang ada pada f4
+        for entry in f4.winfo_children():       
+            entry.destroy()                     
+
+        # Membuat widget label( det(A) ) pada f4, dan mengatur posisinya
+        titleD = Label(f4, font = ("arial", "9", "bold"), text = "det(A)", bg = "#474E64", fg = "#FFFFFF"); titleD.grid(row = 0, column = 0)   
+        # Membuat widget entry pada f4 dan mengatur posisinya
+        entryD = Entry(f4, width= 5, justify = "center"); entryD.grid(row = 0, column = 1)       
+        # mengisi widget entry yang telah dibuat dengan nilai determinan                                              
+        entryD.insert(0, D)
+
+        # Membuat widget label( det(B) ) pada f4, dan mengatur posisinya
+        titleE = Label(f4, font = ("arial", "9", "bold"), text = "det(B)", bg = "#474E64", fg = "#FFFFFF"); titleE.grid(row = 1, column = 0)   
+        # Membuat widget entry pada f4 dan mengatur posisinya
+        entryE = Entry(f4, width= 5, justify = "center"); entryE.grid(row = 1, column = 1)       
+        # mengisi widget entry yang telah dibuat dengan nilai determinan                                              
+        entryE.insert(0, E)                                                                                                                   
+
     except:                                 
         # Menampilkan messagebox bila error(tidak dapat dideterminan)
         messagebox.showinfo(title = "syarat", message = "Jumlah baris dan kolom harus sama")
 
-    # Menghapus semua widget yang ada pada f4
-    for entry in f4.winfo_children():       
-        entry.destroy()                     
-
-    # Membuat widget label( det(A) ) pada f4, dan mengatur posisinya
-    titleD = Label(f4, font = ("arial", "9", "bold"), text = "det(A)", bg = "#474E64", fg = "#FFFFFF"); titleD.grid(row = 0, column = 0)   
-    # Membuat widget entry pada f4 dan mengatur posisinya
-    entryD = Entry(f4, width= 5, justify = "center"); entryD.grid(row = 0, column = 1)       
-    # mengisi widget entry yang telah dibuat dengan nilai determinan                                              
-    entryD.insert(0, D)                                                                                                                   
 # ======================================================================================================================================================================
+
 def Scalar():
     # Perkalian matriks A dan skalar K --> Matriks C
     C = A * K
+    D = B * K
 
     # Menghapus semua widget yang ada pada f4
     for widget in f4.winfo_children():
         widget.destroy()                    
 
-    # Membuat widget label(A x B) pada f4 dan mengatur posisinya
+    # Membuat widget label(A x K) pada f4 dan mengatur posisinya
     titleC = Label(f4, font = ("arial", "9", "bold"), text = "A x K", bg = "#474E64", fg = "#FFFFFF")  
     titleC.grid(row = 0, column = 0, columnspan = len(C[0]))                                           
 
@@ -310,6 +327,18 @@ def Scalar():
             entry = Entry(f4, width= 5, justify = "center")     
             entry.grid(row = i+1, column = j)                   
             entry.insert(0, C[i, j])
+    
+    
+    # Membuat widget label(B x K) pada f4 dan mengatur posisinya
+    titleD = Label(f4, font = ("arial", "9", "bold"), text = "B x K", bg = "#474E64", fg = "#FFFFFF")  
+    titleD.grid(row = 5, column = 0, columnspan = len(D[0]))                                           
+
+    # Membuat, mengatur posisi, dan mengisi widget entry(Matriks C)
+    for i in range(len(D)):                                     
+        for j in range(len(D[0])):                              
+            entry = Entry(f4, width= 5, justify = "center")     
+            entry.grid(row = i+1+5, column = j)                   
+            entry.insert(0, D[i, j])
 # ======================================================================================================================================================================
 def Invers():
     # Handling Exceptions
@@ -403,7 +432,7 @@ save.grid(row = 0, column = 0)
 
 # Button delete --> Delete
 delete = Button(f2, text = "Delete", width = 12, command = Delete, relief = GROOVE, bg = "#FF5264", fg = "#FFFFFF", state = DISABLED)
-delete.grid(row = 1, column = 0, pady = (4, 0), columnspan = 2)
+delete.grid(row = 1, column = 0, pady = (4, 0))
 
 # Button add --> Penjumlahan
 add = Button(f2, text = "Penjumlahan", width = 12, command = Add, relief = GROOVE, bg = "#3C4559", fg = "#FFFFFF", state = DISABLED)
@@ -411,7 +440,7 @@ add.grid(row = 0, column = 1, padx = (10, 0))
 
 # Button subtract --> Pengurangan
 subtract = Button(f2, text = "Pengurangan", width = 12, command = Subtract, relief = GROOVE, bg = "#3C4559", fg = "#FFFFFF", state = DISABLED)
-subtract.grid(row = 1, column = 1, padx = (10, 0), pady = (4, 0), columnspan = 2)   
+subtract.grid(row = 1, column = 1, padx = (10, 0), pady = (4, 0))   
 
 # Button multiply --> Perkalian (Matriks)
 multiply = Button(f2, text = "Perkalian", width = 12, command = Multiply, relief = GROOVE, bg = "#3C4559", fg = "#FFFFFF", state = DISABLED)
@@ -419,7 +448,7 @@ multiply.grid(row = 0, column = 2, padx = (10, 0))
 
 # Button determinant --> Determinan
 determinant = Button(f2, text = "Determinan", width = 12, command = Determinant, relief = GROOVE, bg = "#3C4559", fg = "#FFFFFF", state = DISABLED)
-determinant.grid(row = 1, column = 2, padx = (10, 0), pady = (4, 0), columnspan = 2)
+determinant.grid(row = 1, column = 2, padx = (10, 0), pady = (4, 0))
 
 # Button scalar --> Perkalian skalar
 scalar = Button(f2, text = "Perkalian Skalar", width = 12, command = Scalar, relief = GROOVE, bg = "#3C4559", fg = "#FFFFFF", state = DISABLED)
@@ -427,7 +456,7 @@ scalar.grid(row = 0, column = 3, padx = (10, 0))
 
 # Button invers --> Menghitung Invers Matriks
 invers = Button(f2, text = "Invers", width = 12, command = Invers, relief = GROOVE, bg = "#3C4559", fg = "#FFFFFF", state = DISABLED)
-invers.grid(row = 2, column = 3, padx = (10, 0), pady = (4, 0), columnspan = 2)
+invers.grid(row = 1, column = 3, padx = (10, 0), pady = (4, 0))
 
 # ======================================================================================================================================================================
                                                             # Mainloop Window Tkinter
