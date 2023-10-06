@@ -9,7 +9,7 @@ import time                         # Mengimport time
 
 root = Tk()                                                                 # Mengisi variabel root dengan TK() dari tkinter                
 root.geometry("500x500")                                                    # Mengatur ukuran window GUI sebesar 500x500
-root.iconbitmap("C:/Users/hp/Desktop/Aljabar Linear/aplikasi/Matrix-Calculator-GUI/matrix.ico")   # Memberi icon pada GUI yang diambil dari folder
+# root.iconbitmap("C:/Users/hp/Desktop/Aljabar Linear/aplikasi/Matrix-Calculator-GUI/matrix.ico")   # Memberi icon pada GUI yang diambil dari folder
 root.title("Kelompok kita")                        # Mengatur title GUI yang terletak dikanan icon
 root.configure(bg = "#474E64")                                              # Memberi warna background GUI
 
