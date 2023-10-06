@@ -181,15 +181,6 @@ def pivot(matrix, index):
 
 def upperTriangle(matrix):
     # print("----------------EF/UT-----------------")
-    '''
-    Fungsi untuk diaaa
-
-    Param:
-    matrix
-
-    Returns:
-    None
-    '''
     rows = numRows(matrix)
     cols = numCols(matrix)
     swaps = 0
